@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31515.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GermanVerbs.Android", "GermanVerbs\GermanVerbs.Android\GermanVerbs.Android.csproj", "{719AF7A3-4326-4A1E-ACDF-CA6DD1DFB864}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GermanVerbs", "GermanVerbs\GermanVerbs\GermanVerbs.csproj", "{D5227787-9F83-4F47-8015-10118C5BA59B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{719AF7A3-4326-4A1E-ACDF-CA6DD1DFB864}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{719AF7A3-4326-4A1E-ACDF-CA6DD1DFB864}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{719AF7A3-4326-4A1E-ACDF-CA6DD1DFB864}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{719AF7A3-4326-4A1E-ACDF-CA6DD1DFB864}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{719AF7A3-4326-4A1E-ACDF-CA6DD1DFB864}.Release|Any CPU.Build.0 = Release|Any CPU
+		{719AF7A3-4326-4A1E-ACDF-CA6DD1DFB864}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{D5227787-9F83-4F47-8015-10118C5BA59B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5227787-9F83-4F47-8015-10118C5BA59B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5227787-9F83-4F47-8015-10118C5BA59B}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{D5227787-9F83-4F47-8015-10118C5BA59B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5227787-9F83-4F47-8015-10118C5BA59B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5227787-9F83-4F47-8015-10118C5BA59B}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4C5F4515-7D61-4BD1-8DA4-67B8DF1DCDD8}
+	EndGlobalSection
+EndGlobal

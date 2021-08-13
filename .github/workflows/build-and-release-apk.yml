@@ -1,0 +1,66 @@
+name: Build German Verbs Conjugation Trainer App
+
+on:
+  push:
+    tags:
+    - "*" 
+    
+jobs:
+  build:
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: macos-latest
+
+    steps:  
+    - name: Clone repo
+      uses: actions/checkout@v2
+    
+    - name: Set default Xamarin SDK versions
+      run: |
+        $VM_ASSETS/select-xamarin-sdk-v2.sh
+
+    - name: Setup .NET Core SDK 5.0.x
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.x'
+
+    - name: Install dependencies
+      run: nuget restore ./GermanVerbs.sln
+        
+    - name: Build Signed APK  
+      run: |
+        echo -n $KEY_STORE | base64 --decode --output /Users/runner/android.keystore
+        msbuild "$CSPROJ_PATH" /t:restore /verbosity:normal /t:Rebuild /t:SignAndroidPackage /p:Configuration="Release" /p:AndroidKeyStore=true /p:AndroidSigningKeyAlias="$ALIAS" /p:AndroidSigningKeyPass="$SIGNING_KEY_PASS" /p:AndroidSigningKeyStore=/Users/runner/android.keystore /p:AndroidSigningStorePass="$KEY_STORE_PASSWORD"
+      env:
+        CSPROJ_PATH: ./GermanVerbs/GermanVerbs.Android/GermanVerbs.Android.csproj
+        KEY_STORE: ${{ secrets.KEY_STORE }}
+        ALIAS: ${{ secrets.ALIAS }}
+        KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+        SIGNING_KEY_PASS: ${{ secrets.SIGNING_KEY_PASS }}
+        
+    - name: Rename APK files
+      run: mv ./GermanVerbs/GermanVerbs.Android/bin/Release/com.kodeoflov.germanverbs-Signed.apk ./GermanVerbs.apk
+      
+    - name: Save APK to Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: GermanVerbs
+        path: ./GermanVerbs.apk
+      
+  release:
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest       
+    needs: build
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Download APK
+      uses: actions/download-artifact@v2.0.10
+      
+    - name: Find my APK please
+      run: find .
+    
+    - name: Release APK
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ./GermanVerbs/GermanVerbs.apk
