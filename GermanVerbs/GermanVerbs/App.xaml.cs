@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Xamarin.Forms;
 
 namespace GermanVerbs
@@ -7,7 +6,7 @@ namespace GermanVerbs
     public partial class App : Application
     {
         public static Random Randomizer { get; } = new Random();
-        
+
         public App()
         {
             InitializeComponent();

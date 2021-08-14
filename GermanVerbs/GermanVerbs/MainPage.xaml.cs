@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,12 +11,18 @@ namespace GermanVerbs
 {
     public partial class MainPage : ContentPage
     {
+        readonly LiteDatabase db;
+        readonly LiteCollection<Conjugation> conjugations;
+        
         static Conjugation currentVerb;
         static string Answer = "";
 
         public MainPage()
         {
             InitializeComponent();
+
+            db = new LiteDatabase(Constants.DatabasePath);
+            conjugations = (LiteCollection<Conjugation>)db.GetCollection<Conjugation>();
         }
 
         async void VerbEntry_Search(object sender, EventArgs e)
@@ -33,7 +40,7 @@ namespace GermanVerbs
             }
 
             VerbEntry.IsReadOnly = true;
-            currentVerb = await GetConjugation(); //await App.Database.GetConjugationAsync(VerbEntry.Text) ??
+            currentVerb = conjugations.FindOne(x => x.Infinitive == VerbEntry.Text) ?? await GetConjugation();
 
             if (currentVerb == null)
             {
@@ -52,10 +59,18 @@ namespace GermanVerbs
             var conjugateUrl = $"https://glagol.reverso.net/спряжение-немецкий-глагол-{VerbEntry.Text}.html";
             var translateUrl = $"https://context.reverso.net/перевод/немецкий-русский/{VerbEntry.Text}";
             var web = new HtmlWeb();
-            var conjugateDoc = await web.LoadFromWebAsync(conjugateUrl);
-            var translateDoc = await web.LoadFromWebAsync(translateUrl);
+            HtmlDocument conjugateDoc, translateDoc;
+            try
+            {
+                conjugateDoc = await web.LoadFromWebAsync(conjugateUrl);
+                translateDoc = await web.LoadFromWebAsync(translateUrl);
+            }
+            catch
+            {
+                return null;
+            }
             var newConjugation = await ConjugationParser.ParseFromHtmlDoc(conjugateDoc, translateDoc);
-            //await App.Database.SaveConjugationAsync(newConjugation);
+            await Task.Run(() => conjugations.Insert(newConjugation));
             return newConjugation;
         }
 
