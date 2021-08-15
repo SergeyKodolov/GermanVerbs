@@ -1,16 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:behaviors="clr-namespace:App.Controls.Behaviors"
-             x:Class="GermanVerbs.MainPage">
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:behaviors="clr-namespace:App.Controls.Behaviors" 
+             xmlns:local="clr-namespace:GermanVerbs"
+             x:Class="GermanVerbs.QuizPage">
 
-    <StackLayout>
-        <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
-            <Label Text="Введи немецкий глагол" HorizontalTextAlignment="Center" TextColor="White" FontSize="20"/>
-        </Frame>
-        <SearchBar x:Name="VerbEntry" Placeholder="Глагол" PlaceholderColor="White" SearchButtonPressed="VerbEntry_Search"
-               BackgroundColor="#2196F3" TextColor="White" CancelButtonColor="White"
-               TextTransform="Lowercase" HorizontalTextAlignment="Center" Text="" />
+    <Shell.SearchHandler>
+        <local:VerbSearchHandler x:Name="VerbEntry" Placeholder="Глагол" FontSize="18" 
+                                 ShowsResults="true" QueryConfirmed="VerbEntry_Search">
+            <local:VerbSearchHandler.ItemTemplate>
+                <DataTemplate>                    
+                    <Label Text="{Binding Infinitive}" FontSize="18" TextColor="White"
+                           Padding="5" />                    
+                </DataTemplate>
+            </local:VerbSearchHandler.ItemTemplate>
+        </local:VerbSearchHandler>
+    </Shell.SearchHandler>
 
+    <StackLayout BackgroundColor="#303030">
+        <Label x:Name="InfinitiveLabel" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" TextColor="White" FontSize="18" Padding="20"></Label>
+        
         <Grid Padding="15">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />

@@ -9,55 +9,61 @@ using Xamarin.Forms;
 
 namespace GermanVerbs
 {
-    public partial class MainPage : ContentPage
+    public partial class QuizPage : ContentPage
     {
-        readonly LiteDatabase db;
-        readonly LiteCollection<Conjugation> conjugations;
-        
-        static Conjugation currentVerb;
         static string Answer = "";
 
-        public MainPage()
+        static LiteDatabase db = new LiteDatabase(Constants.DatabasePath);
+        static LiteCollection<Conjugation> conjugations = (LiteCollection<Conjugation>)db.GetCollection<Conjugation>();
+
+        public static Conjugation CurrentVerb { get; set; }
+
+        public QuizPage()
         {
             InitializeComponent();
-
-            db = new LiteDatabase(Constants.DatabasePath);
-            conjugations = (LiteCollection<Conjugation>)db.GetCollection<Conjugation>();
+            VerbEntry.Conjugations = conjugations.FindAll().ToList();
         }
 
-        async void VerbEntry_Search(object sender, EventArgs e)
+        async void VerbEntry_Search(object sender, Conjugation verb)
         {
+            InfinitiveLabel.Text = "";
             TenseLabel.Text = "";
             Answer = "";
             AnswerEntry.Text = "";
             PronounLabel.Text = "";
             NextButton.IsEnabled = false;
 
-            if (VerbEntry.Text == "")
+            if (verb != null)
             {
-                await DisplayAlert("Ошибка", "Нужно ввести глагол", "ОК");
-                return;
+                CurrentVerb = verb;
+            }
+            else
+            {
+                if (VerbEntry.Query == "")
+                {
+                    await DisplayAlert("Ошибка", "Нужно ввести глагол", "ОК");
+                    return;
+                }
+
+                CurrentVerb = conjugations.FindOne(x => x.Infinitive == VerbEntry.Query) ?? await GetConjugation();
+                
+                if (CurrentVerb == null)
+                {
+                    await DisplayAlert("Ошибка", "Не могу найти глагол", ":(");
+                    VerbEntry.Query = "";
+                    return;
+                }
             }
 
-            VerbEntry.IsReadOnly = true;
-            currentVerb = conjugations.FindOne(x => x.Infinitive == VerbEntry.Text) ?? await GetConjugation();
-
-            if (currentVerb == null)
-            {
-                await DisplayAlert("Ошибка", "Не могу найти глагол", ":(");
-                VerbEntry.IsReadOnly = false;
-                VerbEntry.Text = "";
-                return;
-            }
-
+            InfinitiveLabel.Text = CurrentVerb.Infinitive;
+            VerbEntry.Query = "";
             CreateQuiz();
-            VerbEntry.IsReadOnly = false;
         }
 
         private async Task<Conjugation> GetConjugation()
         {
-            var conjugateUrl = $"https://glagol.reverso.net/спряжение-немецкий-глагол-{VerbEntry.Text}.html";
-            var translateUrl = $"https://context.reverso.net/перевод/немецкий-русский/{VerbEntry.Text}";
+            var conjugateUrl = $"https://glagol.reverso.net/спряжение-немецкий-глагол-{VerbEntry.Query}.html";
+            var translateUrl = $"https://context.reverso.net/перевод/немецкий-русский/{VerbEntry.Query}";
             var web = new HtmlWeb();
             HtmlDocument conjugateDoc, translateDoc;
             try
@@ -70,13 +76,19 @@ namespace GermanVerbs
                 return null;
             }
             var newConjugation = await ConjugationParser.ParseFromHtmlDoc(conjugateDoc, translateDoc);
-            await Task.Run(() => conjugations.Insert(newConjugation));
+
+            if (newConjugation != null)
+            {
+                await Task.Run(() => conjugations.Insert(newConjugation));
+                await Task.Run(() => VerbEntry.Conjugations = conjugations.FindAll().ToList());
+            }
+
             return newConjugation;
         }
 
         void CreateQuiz()
         {
-            var propertyList = currentVerb.GetType().GetProperties().ToList();
+            var propertyList = CurrentVerb.GetType().GetProperties().ToList();
             var randProperty = propertyList[App.Randomizer.Next(1, propertyList.Count)];
 
             var descriptionAtribute = (DescriptionAttribute)randProperty.GetCustomAttributes(typeof(DescriptionAttribute), false)[0];
@@ -84,11 +96,11 @@ namespace GermanVerbs
 
             if (randProperty.PropertyType == typeof(string))
             {
-                Answer = (string)randProperty.GetValue(currentVerb);
+                Answer = (string)randProperty.GetValue(CurrentVerb);
             }
             else
             {
-                var dict = (Dictionary<string, string>)randProperty.GetValue(currentVerb);
+                var dict = (Dictionary<string, string>)randProperty.GetValue(CurrentVerb);
                 var pronounList = dict.Keys.ToList();
                 var randPronoun = pronounList[App.Randomizer.Next(0, pronounList.Count)];
                 PronounLabel.Text = randPronoun;
