@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GermanVerbs.Data;
+using System;
 using Xamarin.Forms;
 
 namespace GermanVerbs
@@ -14,16 +15,10 @@ namespace GermanVerbs
             MainPage = new AppShell();
         }
 
-        protected override void OnStart()
-        {
-        }
-
         protected override void OnSleep()
         {
-        }
-
-        protected override void OnResume()
-        {
+            ConjugationData.Save();
+            base.OnSleep();
         }
     }
 }

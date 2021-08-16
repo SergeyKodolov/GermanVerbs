@@ -1,12 +1,10 @@
-﻿using System;
+﻿using GermanVerbs.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using Xamarin.Forms;
 
-namespace GermanVerbs
+namespace GermanVerbs.Controls
 {
     public class VerbSearchHandler : SearchHandler
     {
@@ -25,7 +23,7 @@ namespace GermanVerbs
                 ItemsSource = Conjugations
                     .Where(x => x.Infinitive.ToLower()
                     .Contains(newValue.ToLower()))
-                    .ToList<Conjugation>();
+                    .ToList();
             }
         }
 

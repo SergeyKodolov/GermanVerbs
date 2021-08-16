@@ -1,23 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:behaviors="clr-namespace:App.Controls.Behaviors" 
-             xmlns:local="clr-namespace:GermanVerbs"
-             x:Class="GermanVerbs.QuizPage">
+             xmlns:controls="clr-namespace:GermanVerbs.Controls"
+             x:Class="GermanVerbs.Views.QuizPage">
 
     <Shell.SearchHandler>
-        <local:VerbSearchHandler x:Name="VerbEntry" Placeholder="Глагол" FontSize="18" 
+        <controls:VerbSearchHandler x:Name="VerbEntry" Placeholder="Глагол" FontSize="18" Query=""
                                  ShowsResults="true" QueryConfirmed="VerbEntry_Search">
-            <local:VerbSearchHandler.ItemTemplate>
+            <controls:VerbSearchHandler.ItemTemplate>
                 <DataTemplate>                    
-                    <Label Text="{Binding Infinitive}" FontSize="18" TextColor="White"
+                    <Label Text="{Binding Infinitive}" FontSize="18" 
                            Padding="5" />                    
                 </DataTemplate>
-            </local:VerbSearchHandler.ItemTemplate>
-        </local:VerbSearchHandler>
+            </controls:VerbSearchHandler.ItemTemplate>
+        </controls:VerbSearchHandler>
     </Shell.SearchHandler>
 
     <StackLayout BackgroundColor="#303030">
-        <Label x:Name="InfinitiveLabel" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" TextColor="White" FontSize="18" Padding="20"></Label>
+        <Label x:Name="InfinitiveLabel" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="18" Padding="20"></Label>
         
         <Grid Padding="15">
             <Grid.ColumnDefinitions>
@@ -28,6 +28,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
 
@@ -40,6 +41,21 @@
                     <behaviors:LongPressBehavior LongPressed="TipButton_LongPressed"/>
                 </Button.Behaviors>
             </Button>
+            <Button x:Name="NextRandButton" Grid.Row="3" Grid.Column="1" Text="Случайное слово" Clicked="NextRandButton_Clicked"/>
+        </Grid>
+
+        <Grid Padding="15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="45"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>            
         </Grid>
     </StackLayout>
 </ContentPage>
