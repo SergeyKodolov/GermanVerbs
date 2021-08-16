@@ -10,21 +10,23 @@
                TargetType="Element">
             <Setter Property="Shell.BackgroundColor"
                     Value="#E8CFCC" />
-            <Setter Property="Shell.TitleColor"
+            <Setter Property="Shell.TabBarTitleColor"
                     Value="#303030" />
-            <Setter Property="Shell.ForegroundColor"
-                    Value="#303030" />
+            <Setter Property="Shell.TabBarUnselectedColor"
+                    Value="#C2AAB5"/>
         </Style>
     </Shell.Resources>
 
     <Tab Title="Главная"
+         Icon="pen.png"
          Shell.NavBarIsVisible="True"
          Style="{StaticResource BaseStyle}">
         <ShellContent ContentTemplate="{DataTemplate views:QuizPage}"
                       Style="{StaticResource BaseStyle}"/>
     </Tab>
 
-    <Tab Title="Глаголы" Shell.NavBarIsVisible="False">
+    <Tab Title="Глаголы" Shell.NavBarIsVisible="False"
+         Icon="book.png">
         <ShellContent ContentTemplate="{DataTemplate views:VerbsPage}"
                       Style="{StaticResource BaseStyle}"/>        
     </Tab>
