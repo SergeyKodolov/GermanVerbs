@@ -32,7 +32,7 @@ namespace GermanVerbs.Data
 
         internal static Conjugation FindOne(string infinitive)
         {
-            return Conjugations.Single(x => x.Infinitive == infinitive);
+            return Conjugations.SingleOrDefault(x => x.Infinitive == infinitive);
         }
 
         internal static List<Conjugation> GetActive()
