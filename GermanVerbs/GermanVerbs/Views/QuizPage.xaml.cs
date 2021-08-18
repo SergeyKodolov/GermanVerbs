@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace GermanVerbs.Views
@@ -17,10 +19,17 @@ namespace GermanVerbs.Views
         Color correctAnswerColor;
         Color wrongAnswerColor;
 
+        public static List<PropertyInfo> PropertyListSource { get; set; }
+
         public QuizPage()
         {
             InitializeComponent();
+            
             VerbEntry.Conjugations = ConjugationData.Conjugations;
+
+            PropertyListSource = typeof(Conjugation).GetProperties().Skip(1).Take(4).ToList();
+            propertySettings.ItemsSource = PropertyListSource;
+
             wrongAnswerColor = Color.FromHex("F4AAA9");
             correctAnswerColor = Color.FromHex("C3D6C3");
         }
@@ -46,7 +55,7 @@ namespace GermanVerbs.Views
                     return;
                 }
 
-                currentVerb = ConjugationData.FindOne(VerbEntry.Query) ?? await ConjugationParser.GetConjugation(VerbEntry.Query);
+                currentVerb = await Task.Run(() => ConjugationData.FindOne(VerbEntry.Query)) ?? await ConjugationParser.GetConjugation(VerbEntry.Query);
 
                 if (currentVerb == null)
                 {
@@ -55,7 +64,7 @@ namespace GermanVerbs.Views
                 }
             }
 
-            InfinitiveLabel.Text = currentVerb.Infinitive;
+            InfinitiveLabel.Text = currentVerb._id;
             VerbEntry.Conjugations = ConjugationData.Conjugations;
             CreateQuiz();
         }
@@ -63,8 +72,8 @@ namespace GermanVerbs.Views
 
         void CreateQuiz()
         {
-            var propertyList = currentVerb.GetType().GetProperties().ToList();
-            var randProperty = propertyList[App.Randomizer.Next(1, propertyList.Count - 1)];
+            var selected = propertySettings.SelectedItems.ToList();
+            var randProperty = selected.Count == 0 ? PropertyListSource[App.Randomizer.Next(1, PropertyListSource.Count-1)] : (PropertyInfo)selected[App.Randomizer.Next(0, selected.Count)];
 
             var descriptionAtribute = (DescriptionAttribute)randProperty.GetCustomAttributes(typeof(DescriptionAttribute), false)[0];
             TenseLabel.Text = descriptionAtribute.Description;
@@ -150,8 +159,15 @@ namespace GermanVerbs.Views
             }
 
             currentVerb = checkedVerbs[App.Randomizer.Next(0, checkedVerbsLength)];
-            InfinitiveLabel.Text = currentVerb.Infinitive;
+            InfinitiveLabel.Text = currentVerb._id;
             NextButton_Clicked(this, EventArgs.Empty);
+        }
+
+        protected override void OnDisappearing()
+        {
+            ConjugationData.SaveToDB();
+            ConjugationData.Sort();
+            base.OnDisappearing();
         }
     }
 }

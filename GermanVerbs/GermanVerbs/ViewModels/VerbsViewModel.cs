@@ -7,20 +7,13 @@ namespace GermanVerbs.ViewModels
 {
     class VerbsViewModel
     {
+        public ICommand DeleteCommand => new Command<Conjugation>(RemoveVerb);
+       
+        public VerbsViewModel() { }
 
-        public ICommand DeleteCommand => new Command<Conjugation>(RemoveMonkey);
-
-        public VerbsViewModel()
+        void RemoveVerb(Conjugation verb)
         {
-
-        }
-
-        void RemoveMonkey(Conjugation verb)
-        {
-            if (ConjugationData.Conjugations.Contains(verb))
-            {
-                ConjugationData.Conjugations.Remove(verb);
-            }
+            ConjugationData.Remove(verb);
         }
     }
 }

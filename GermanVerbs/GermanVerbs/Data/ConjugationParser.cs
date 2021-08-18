@@ -52,12 +52,12 @@ namespace GermanVerbs.Data
 
                     return new Conjugation()
                     {
+                        _id = invinitive,
                         Translation = translation,
-                        Infinitive = invinitive,
                         PresentIndicative = presentIndicative,
                         PerfectIndicative = perfectIndicative,
                         PresentImperative = presentImperative,
-                        Active = true
+                        IsActive = true
                     };
                 });
             }
