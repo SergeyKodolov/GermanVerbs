@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace GermanVerbs.Data
+namespace GermanVerbs
 {
     class Constants
     {

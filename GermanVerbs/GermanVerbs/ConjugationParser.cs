@@ -1,37 +1,11 @@
-﻿using GermanVerbs.Models;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace GermanVerbs.Data
+namespace GermanVerbs
 {
     public static class ConjugationParser
     {
-        public static async Task<Conjugation> GetConjugation(string verb)
-        {
-            var conjugateUrl = $"https://glagol.reverso.net/спряжение-немецкий-глагол-{verb}.html";
-            var translateUrl = $"https://context.reverso.net/перевод/немецкий-русский/{verb}";
-            var web = new HtmlWeb();
-            HtmlDocument conjugateDoc, translateDoc;
-            try
-            {
-                conjugateDoc = await web.LoadFromWebAsync(conjugateUrl);
-                translateDoc = await web.LoadFromWebAsync(translateUrl);
-            }
-            catch
-            {
-                return null;
-            }
-            var newConjugation = await ParseFromHtmlDoc(conjugateDoc, translateDoc);
-
-            if (newConjugation != null)
-            {
-                await Task.Run(() => ConjugationData.Insert(newConjugation));
-            }
-
-            return newConjugation;
-        }
-
         public static async Task<Conjugation> ParseFromHtmlDoc(HtmlDocument conjugateHtmlDoc, HtmlDocument translateHtmlDoc)
         {
             try
@@ -45,7 +19,7 @@ namespace GermanVerbs.Data
                     node = conjugateHtmlDoc.DocumentNode
                         .SelectSingleNode("//a[@class='targetted-word-transl']");
                     var invinitive = node.InnerText.Trim();
-
+                
                     Dictionary<string, string> presentIndicative = GetTense(conjugateHtmlDoc, "Indikativ Präsens");
                     Dictionary<string, string> perfectIndicative = GetTense(conjugateHtmlDoc, "Indikativ Perfekt");
                     Dictionary<string, string> presentImperative = GetTense(conjugateHtmlDoc, "Imperativ Präsens");
@@ -56,8 +30,7 @@ namespace GermanVerbs.Data
                         Infinitive = invinitive,
                         PresentIndicative = presentIndicative,
                         PerfectIndicative = perfectIndicative,
-                        PresentImperative = presentImperative,
-                        Active = true
+                        PresentImperative = presentImperative
                     };
                 });
             }
