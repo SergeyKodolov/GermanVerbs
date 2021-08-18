@@ -1,4 +1,5 @@
-﻿using GermanVerbs.ViewModels;
+﻿using GermanVerbs.Data;
+using GermanVerbs.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -11,6 +12,12 @@ namespace GermanVerbs.Views
         {
             InitializeComponent();
             BindingContext = new VerbsViewModel();
+        }
+
+        protected override void OnDisappearing()
+        {
+            ConjugationData.SaveToDB();
+            base.OnDisappearing();
         }
     }
 }

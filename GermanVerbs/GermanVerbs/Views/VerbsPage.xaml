@@ -31,14 +31,14 @@
                             RowDefinitions="Auto,Auto"
                             ColumnDefinitions="Auto,*">
                         <Label Grid.Column="1" 
-                        Text="{Binding Infinitive}"  FontSize="18"
+                        Text="{Binding _id}"  FontSize="18"
                         FontAttributes="Bold"  VerticalTextAlignment="Center"/>
                         <Label Grid.Column="1" Grid.Row="1" 
                         Text="{Binding Translation}"  FontSize="12"
                         FontAttributes="Bold"  VerticalTextAlignment="Center"/>
                         <CheckBox Grid.Column="2" 
-                        IsChecked="{Binding Active, Mode=TwoWay}"                        
-                        VerticalOptions="Center" HorizontalOptions="End" />
+                        IsChecked="{Binding IsActive, Mode=TwoWay}"                        
+                        VerticalOptions="Center" HorizontalOptions="End"/>
                     </Grid>
                 </SwipeView>
             </DataTemplate>

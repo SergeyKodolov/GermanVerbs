@@ -3,13 +3,32 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:behaviors="clr-namespace:App.Controls.Behaviors" 
              xmlns:controls="clr-namespace:GermanVerbs.Controls"
              x:Class="GermanVerbs.Views.QuizPage">
+    <ContentPage.Resources>
+        <Style TargetType="Label">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" 
+                                    Value="#E8CFCC" />
+                                <Setter Property="TextColor"
+                                    Value="#303030" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
 
     <Shell.SearchHandler>
         <controls:VerbSearchHandler x:Name="VerbEntry" Placeholder="Глагол" FontSize="18" Query=""
-                                 ShowsResults="true" QueryConfirmed="VerbEntry_Search">
+                                    ShowsResults="true" QueryConfirmed="VerbEntry_Search">
             <controls:VerbSearchHandler.ItemTemplate>
                 <DataTemplate>                    
-                    <Label Text="{Binding Infinitive}" FontSize="18" 
+                    <Label Text="{Binding _id}" FontSize="18" 
                            Padding="5" />                    
                 </DataTemplate>
             </controls:VerbSearchHandler.ItemTemplate>
@@ -17,7 +36,7 @@
     </Shell.SearchHandler>
 
     <StackLayout BackgroundColor="#303030">
-        <Label x:Name="InfinitiveLabel" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="18" Padding="20"></Label>
+        <Label x:Name="InfinitiveLabel" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="24" Padding="15"></Label>
         
         <Grid Padding="15">
             <Grid.ColumnDefinitions>
@@ -27,9 +46,10 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
 
             <Label x:Name="TenseLabel"  Grid.Row="0" Grid.Column="1" FontSize="18" VerticalTextAlignment="End"/>
@@ -41,21 +61,19 @@
                     <behaviors:LongPressBehavior LongPressed="TipButton_LongPressed"/>
                 </Button.Behaviors>
             </Button>
-            <Button x:Name="NextRandButton" Grid.Row="3" Grid.Column="1" Text="Случайное слово" Clicked="NextRandButton_Clicked"/>
-        </Grid>
+            <Button x:Name="NextRandButton" Grid.Row="3" Grid.Column="1" Text="Случайный глагол" Clicked="NextRandButton_Clicked"/>
 
-        <Grid Padding="15">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="45"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>            
+            <CollectionView x:Name="propertySettings" Grid.ColumnSpan="3" Grid.Row="4"
+                            SelectionMode="Multiple" HorizontalOptions="Center" Margin="15" WidthRequest="300">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding Name}" FontSize="18" HorizontalOptions="CenterAndExpand"
+                               FontAttributes="Bold" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Padding="10"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </Grid>
+        
     </StackLayout>
+    
 </ContentPage>
