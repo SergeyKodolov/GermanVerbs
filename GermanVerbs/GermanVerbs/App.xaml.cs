@@ -14,5 +14,11 @@ namespace GermanVerbs
 
             MainPage = new AppShell();
         }
+
+        protected override void OnSleep()
+        {
+            ConjugationData.Save();
+            base.OnSleep();
+        }
     }
 }
