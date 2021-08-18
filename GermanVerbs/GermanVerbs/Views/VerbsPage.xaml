@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:data="clr-namespace:GermanVerbs.Data"
+             x:Class="GermanVerbs.Views.VerbsPage"
+             BackgroundColor="#303030">
+
+    <CollectionView x:Name="collectionView"
+                    ItemsSource="{Binding Source={x:Static data:ConjugationData.Conjugations}, Mode=TwoWay}"
+                    SelectionMode="None">
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <SwipeView>
+                    <SwipeView.LeftItems>
+                        <SwipeItems>
+                            <SwipeItem Text="Удалить"                                       
+                                       BackgroundColor="#E8CFCC"
+                                       Command="{Binding Source={x:Reference collectionView}, Path=BindingContext.DeleteCommand}"
+                                       CommandParameter="{Binding}" />
+                        </SwipeItems>
+                    </SwipeView.LeftItems>
+                    <SwipeView.RightItems>
+                        <SwipeItems>
+                            <SwipeItem Text="Удалить"                                       
+                                       BackgroundColor="#E8CFCC"
+                                       Command="{Binding Source={x:Reference collectionView}, Path=BindingContext.DeleteCommand}"
+                                       CommandParameter="{Binding}" />
+                        </SwipeItems>
+                    </SwipeView.RightItems>
+                    <Grid Padding="10"
+                          RowDefinitions="Auto,Auto"
+                          ColumnDefinitions="Auto,*">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={x:Reference collectionView}, Path=BindingContext.TapCommand}"
+                                                  CommandParameter="{x:Reference checkBox}" />
+                        </Grid.GestureRecognizers>
+                        
+                        <Label Grid.Column="1" 
+                               Text="{Binding _id}"  FontSize="18"
+                               FontAttributes="Bold"  VerticalTextAlignment="Center" />
+                        <Label Grid.Column="1" Grid.Row="1" 
+                               Text="{Binding Translation}"  FontSize="12"
+                               FontAttributes="Bold"  VerticalTextAlignment="Center"/>
+                        <CheckBox Grid.Column="2" x:Name="checkBox"
+                                  IsChecked="{Binding IsActive, Mode=TwoWay}"                        
+                                  VerticalOptions="Center" HorizontalOptions="End"/>
+                    </Grid>
+                </SwipeView>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</ContentPage>

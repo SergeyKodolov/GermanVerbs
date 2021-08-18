@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:behaviors="clr-namespace:App.Controls.Behaviors" 
+             xmlns:controls="clr-namespace:GermanVerbs.Controls"
+             xmlns:data="clr-namespace:GermanVerbs.Data"
+             x:Class="GermanVerbs.Views.QuizPage">
+    <ContentPage.Resources>
+        <Style TargetType="Label">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" 
+                                    Value="#E8CFCC" />
+                                <Setter Property="TextColor"
+                                    Value="#303030" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
+
+    <Shell.SearchHandler>
+        <controls:VerbSearchHandler x:Name="VerbEntry" Placeholder="Глагол" FontSize="18" Query=""
+                                    ShowsResults="true" QueryConfirmed="VerbEntry_Search">
+            <controls:VerbSearchHandler.ItemTemplate>
+                <DataTemplate>                    
+                    <Label Text="{Binding _id}" FontSize="18" 
+                           Padding="5" />                    
+                </DataTemplate>
+            </controls:VerbSearchHandler.ItemTemplate>
+        </controls:VerbSearchHandler>
+    </Shell.SearchHandler>
+
+    <StackLayout BackgroundColor="#303030">
+        <Label x:Name="InfinitiveLabel" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="24" Padding="15"></Label>
+        
+        <Grid Padding="15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="45"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Label x:Name="TenseLabel"  Grid.Row="0" Grid.Column="1" FontSize="18" VerticalTextAlignment="End"/>
+            <Label x:Name="PronounLabel" Grid.Row="1" Grid.Column="0" FontSize="18" VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
+            <Entry x:Name="AnswerEntry" Grid.Row="1" Grid.Column="1" Placeholder="продолжи..." TextChanged="AnswerEntry_TextChanged"/>
+            <Button x:Name="NextButton" Grid.Row="2" Grid.Column="1" Text="Дальше" IsEnabled="False" Clicked="NextButton_Clicked"/>
+            <Button x:Name="TipButton" Grid.Row="1" Grid.Column="2" Text="?" Clicked="TipButton_Clicked" >
+                <Button.Behaviors>
+                    <behaviors:LongPressBehavior LongPressed="TipButton_LongPressed"/>
+                </Button.Behaviors>
+            </Button>
+            <Button x:Name="NextRandButton" Grid.Row="3" Grid.Column="1" Text="Случайный глагол" Clicked="NextRandButton_Clicked"/>
+
+            <CollectionView x:Name="propertySettings" Grid.ColumnSpan="3" Grid.Row="4"
+                            SelectionMode="Multiple" HorizontalOptions="Center" Margin="15" WidthRequest="300"
+                            ItemsSource="{Binding Source={x:Static data:SettingsData.Settings}}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding Key}" FontSize="18" HorizontalOptions="CenterAndExpand"
+                               FontAttributes="Bold" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Padding="10"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+        
+    </StackLayout>
+    
+</ContentPage>

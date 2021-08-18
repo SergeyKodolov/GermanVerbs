@@ -1,5 +1,5 @@
-﻿using System;
-using System.IO;
+﻿using GermanVerbs.Data;
+using System;
 using Xamarin.Forms;
 
 namespace GermanVerbs
@@ -7,24 +7,18 @@ namespace GermanVerbs
     public partial class App : Application
     {
         public static Random Randomizer { get; } = new Random();
-        
+
         public App()
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
-        }
-
-        protected override void OnStart()
-        {
+            MainPage = new AppShell();
         }
 
         protected override void OnSleep()
         {
-        }
-
-        protected override void OnResume()
-        {
+            ConjugationData.SaveToDB();
+            base.OnSleep();
         }
     }
 }
