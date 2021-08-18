@@ -3,7 +3,6 @@ using GermanVerbs.Models;
 using LiteDB;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -19,16 +18,11 @@ namespace GermanVerbs.Views
         Color correctAnswerColor;
         Color wrongAnswerColor;
 
-        public static List<PropertyInfo> PropertyListSource { get; set; }
-
         public QuizPage()
         {
             InitializeComponent();
-            
-            VerbEntry.Conjugations = ConjugationData.Conjugations;
 
-            PropertyListSource = typeof(Conjugation).GetProperties().Skip(1).Take(4).ToList();
-            propertySettings.ItemsSource = PropertyListSource;
+            VerbEntry.Conjugations = ConjugationData.Conjugations;
 
             wrongAnswerColor = Color.FromHex("F4AAA9");
             correctAnswerColor = Color.FromHex("C3D6C3");
@@ -72,19 +66,23 @@ namespace GermanVerbs.Views
 
         void CreateQuiz()
         {
-            var selected = propertySettings.SelectedItems.ToList();
-            var randProperty = selected.Count == 0 ? PropertyListSource[App.Randomizer.Next(1, PropertyListSource.Count-1)] : (PropertyInfo)selected[App.Randomizer.Next(0, selected.Count)];
+            var selected = propertySettings.SelectedItems;
+            var all = SettingsData.Settings.ToList();
 
-            var descriptionAtribute = (DescriptionAttribute)randProperty.GetCustomAttributes(typeof(DescriptionAttribute), false)[0];
-            TenseLabel.Text = descriptionAtribute.Description;
+            KeyValuePair<string, PropertyInfo> randProperty =
+                selected.Count == 0 ?
+                all[App.Randomizer.Next(0, all.Count)] :
+                (KeyValuePair<string, PropertyInfo>)selected[App.Randomizer.Next(0, selected.Count)];
 
-            if (randProperty.PropertyType == typeof(string))
+            TenseLabel.Text = randProperty.Key;
+
+            if (randProperty.Value.PropertyType == typeof(string))
             {
-                Answer = (string)randProperty.GetValue(currentVerb);
+                Answer = (string)randProperty.Value.GetValue(currentVerb);
             }
             else
             {
-                var dict = (Dictionary<string, string>)randProperty.GetValue(currentVerb);
+                var dict = (Dictionary<string, string>)randProperty.Value.GetValue(currentVerb);
                 var pronounList = dict.Keys.ToList();
                 var randPronoun = pronounList[App.Randomizer.Next(0, pronounList.Count)];
                 PronounLabel.Text = randPronoun;
