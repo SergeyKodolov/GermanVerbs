@@ -12,7 +12,7 @@
             <DataTemplate>
                 <SwipeView>
                     <SwipeView.LeftItems>
-                        <SwipeItems>                           
+                        <SwipeItems>
                             <SwipeItem Text="Удалить"                                       
                                        BackgroundColor="#E8CFCC"
                                        Command="{Binding Source={x:Reference collectionView}, Path=BindingContext.DeleteCommand}"
@@ -28,17 +28,22 @@
                         </SwipeItems>
                     </SwipeView.RightItems>
                     <Grid Padding="10"
-                            RowDefinitions="Auto,Auto"
-                            ColumnDefinitions="Auto,*">
+                          RowDefinitions="Auto,Auto"
+                          ColumnDefinitions="Auto,*">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={x:Reference collectionView}, Path=BindingContext.TapCommand}"
+                                                  CommandParameter="{x:Reference checkBox}" />
+                        </Grid.GestureRecognizers>
+                        
                         <Label Grid.Column="1" 
-                        Text="{Binding _id}"  FontSize="18"
-                        FontAttributes="Bold"  VerticalTextAlignment="Center"/>
+                               Text="{Binding _id}"  FontSize="18"
+                               FontAttributes="Bold"  VerticalTextAlignment="Center" />
                         <Label Grid.Column="1" Grid.Row="1" 
-                        Text="{Binding Translation}"  FontSize="12"
-                        FontAttributes="Bold"  VerticalTextAlignment="Center"/>
-                        <CheckBox Grid.Column="2" 
-                        IsChecked="{Binding IsActive, Mode=TwoWay}"                        
-                        VerticalOptions="Center" HorizontalOptions="End"/>
+                               Text="{Binding Translation}"  FontSize="12"
+                               FontAttributes="Bold"  VerticalTextAlignment="Center"/>
+                        <CheckBox Grid.Column="2" x:Name="checkBox"
+                                  IsChecked="{Binding IsActive, Mode=TwoWay}"                        
+                                  VerticalOptions="Center" HorizontalOptions="End"/>
                     </Grid>
                 </SwipeView>
             </DataTemplate>
