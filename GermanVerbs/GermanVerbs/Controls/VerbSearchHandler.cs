@@ -21,7 +21,7 @@ namespace GermanVerbs.Controls
             else
             {
                 ItemsSource = Conjugations
-                    .Where(x => x._id.ToLower()
+                    .Where(x => x.Infinitive.ToLower()
                     .Contains(newValue.ToLower()))
                     .ToList();
             }

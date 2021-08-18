@@ -1,14 +1,12 @@
-﻿using LiteDB;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace GermanVerbs.Models
 {
-    public class Conjugation : IComparable<Conjugation>
+    public class Conjugation
     {
         [Description("Infinitive")]
-        public string _id { get; set; }
+        public string Infinitive { get; set; }
 
         [Description("Перевод")]
         public string Translation { get; set; }
@@ -22,11 +20,6 @@ namespace GermanVerbs.Models
         [Description("Present Imp.")]
         public Dictionary<string, string> PresentImperative { get; set; }
 
-        public bool IsActive { get; set; }
-
-        public int CompareTo(Conjugation other) {
-            
-            return _id.CompareTo(other._id);
-        }
+        public bool Active { get; set; }
     }
 }

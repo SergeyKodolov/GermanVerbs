@@ -1,6 +1,5 @@
 ﻿using GermanVerbs.Models;
 using LiteDB;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -16,50 +15,29 @@ namespace GermanVerbs.Data
         {
             var db = new LiteDatabase(Constants.DatabasePath);
             conjugationCollection = (LiteCollection<Conjugation>)db.GetCollection<Conjugation>();
-            Conjugations = new ObservableCollection<Conjugation>(conjugationCollection.FindAll().OrderBy(x => x._id).ToList());
+            Conjugations = new ObservableCollection<Conjugation>(conjugationCollection.FindAll().OrderBy(x => x.Infinitive).ToList());
         }
 
-        internal static void Remove(Conjugation conjugation)
+        internal static void Save()
         {
-            if (Conjugations.Contains(conjugation))
-            {
-                Conjugations.Remove(conjugation);
-            }
+            conjugationCollection.DeleteAll();
+            conjugationCollection.Insert(Conjugations);
         }
 
         internal static void Insert(Conjugation newConjugation)
         {
             if (!Conjugations.Contains(newConjugation))
-            {
                 Conjugations.Add(newConjugation);
-            }
         }
 
         internal static Conjugation FindOne(string infinitive)
         {
-            return Conjugations.SingleOrDefault(x => x._id == infinitive);
+            return Conjugations.SingleOrDefault(x => x.Infinitive == infinitive);
         }
 
         internal static List<Conjugation> GetActive()
         {
-            return Conjugations.Where(x => x.IsActive).ToList();
-        }
-
-        internal static void Sort()
-        {
-            Conjugations.Sort();
-        }
-
-        public static void Sort<T>(this ObservableCollection<T> collection) where T : IComparable<Conjugation>
-        {
-            List<T> sorted = collection.OrderBy(x => x).ToList();
-            for (int i = 0; i < sorted.Count(); i++)
-                collection.Move(collection.IndexOf(sorted[i]), i);
-        }
-
-        internal static void SaveToDB()
-        {
-            conjugationCollection.Upsert(Conjugations);
+            return Conjugations.Where(x => x.Active).ToList();
         }
     }
 }
