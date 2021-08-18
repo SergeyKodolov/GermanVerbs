@@ -60,7 +60,6 @@ namespace GermanVerbs.Data
         internal static void SaveToDB()
         {
             conjugationCollection.Upsert(Conjugations);
-            conjugationCollection.DeleteMany(x => !Conjugations.Contains(x));            
         }
     }
 }

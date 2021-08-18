@@ -165,6 +165,7 @@ namespace GermanVerbs.Views
 
         protected override void OnDisappearing()
         {
+            ConjugationData.SaveToDB();
             ConjugationData.Sort();
             base.OnDisappearing();
         }
