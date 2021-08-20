@@ -13,13 +13,13 @@ namespace GermanVerbs.Models
         [Description("Перевод")]
         public string Translation { get; set; }
 
-        [Description("Present Ind.")]
+        [Description("Präsens Indikativ")]
         public Dictionary<string, string> PresentIndicative { get; set; }
 
-        [Description("Perfect Ind.")]
+        [Description("Perfekt Indikativ")]
         public Dictionary<string, string> PerfectIndicative { get; set; }
 
-        [Description("Present Imp.")]
+        [Description("Präsens Imperativ")]
         public Dictionary<string, string> PresentImperative { get; set; }
 
         public bool IsActive { get; set; }

@@ -4,7 +4,82 @@
              x:Class="GermanVerbs.App"
              xmlns:windows="clr-namespace:Xamarin.Forms.PlatformConfiguration.WindowsSpecific;assembly=Xamarin.Forms.Core"
              windows:Application.ImageDirectory="Assets">
-    <Application.Resources>       
+    <Application.Resources>
 
+        <Color x:Key="TransparentColor">Transparent</Color>
+        <Color x:Key="MainColor">#E8CFCC</Color>
+        <Color x:Key="DarkMainColor">#C2AAB5</Color>
+        <Color x:Key="TextButtonColor">#303030</Color>
+
+        <!-- Light colors -->
+        <Color x:Key="LightPageBackgroundColor">White</Color>
+        <Color x:Key="LightSecondaryColor">#303030</Color>
+        <Color x:Key="LightTextColor">#101010</Color>
+
+        <!-- Dark colors -->
+        <Color x:Key="DarkPageBackgroundColor">#303030</Color>
+        <Color x:Key="DarkSecondaryColor">White</Color>
+        <Color x:Key="DarkTextColor">WhiteSmoke</Color>
+
+        <Style x:Key="ContentPageStyle"
+               TargetType="ContentPage">
+            <Setter Property="BackgroundColor"
+                    Value="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}" />
+        </Style>
+        
+        <Style x:Key="TabStyle"
+               TargetType="Element">
+            <Setter Property="Shell.BackgroundColor"
+                    Value="{StaticResource MainColor}" />
+            <Setter Property="Shell.TabBarUnselectedColor"
+                    Value="{StaticResource DarkMainColor}"/>
+            <Setter Property="Shell.TitleColor"
+                    Value="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}"/>
+        </Style>
+
+        <Style x:Key="ButtonStyle"
+               TargetType="Button">
+            <Setter Property="BackgroundColor"
+                    Value="{AppThemeBinding Light={StaticResource MainColor}, Dark={StaticResource DarkMainColor}}" />
+            <Setter Property="TextColor"
+                    Value="{StaticResource TextButtonColor}" />
+        </Style>
+
+        <Style x:Key="LabelStyle"
+               TargetType="Label">
+            <Setter Property="FontSize"
+                    Value="18" />
+            <Setter Property="TextColor"
+                    Value="{AppThemeBinding Light={StaticResource LightTextColor}, Dark={StaticResource DarkTextColor}}"/>            
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" 
+                                        Value="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}" />                              
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" 
+                                        Value="{AppThemeBinding Light={StaticResource MainColor}, Dark={StaticResource DarkMainColor}}" />
+                                <Setter Property="TextColor"
+                                        Value="{StaticResource TextButtonColor}"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+
+        <Style x:Key="EntryStyle"
+               TargetType="Label">
+            <Setter Property="TextColor"
+                    Value="{AppThemeBinding Light={StaticResource LightTextColor}, Dark={StaticResource DarkTextColor}}" />
+            <Setter Property="FontSize"
+                    Value="18" />
+        </Style>
+        
     </Application.Resources>
 </Application>

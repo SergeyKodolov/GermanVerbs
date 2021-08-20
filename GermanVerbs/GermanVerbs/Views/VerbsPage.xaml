@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:data="clr-namespace:GermanVerbs.Data"
              x:Class="GermanVerbs.Views.VerbsPage"
-             BackgroundColor="#303030">
+             Style="{StaticResource ContentPageStyle}">
 
     <CollectionView x:Name="collectionView"
                     ItemsSource="{Binding Source={x:Static data:ConjugationData.Conjugations}, Mode=TwoWay}"
@@ -14,7 +14,7 @@
                     <SwipeView.LeftItems>
                         <SwipeItems>
                             <SwipeItem Text="Удалить"                                       
-                                       BackgroundColor="#E8CFCC"
+                                       BackgroundColor="{StaticResource MainColor}"
                                        Command="{Binding Source={x:Reference collectionView}, Path=BindingContext.DeleteCommand}"
                                        CommandParameter="{Binding}" />
                         </SwipeItems>
@@ -22,7 +22,7 @@
                     <SwipeView.RightItems>
                         <SwipeItems>
                             <SwipeItem Text="Удалить"                                       
-                                       BackgroundColor="#E8CFCC"
+                                       BackgroundColor="{StaticResource MainColor}"
                                        Command="{Binding Source={x:Reference collectionView}, Path=BindingContext.DeleteCommand}"
                                        CommandParameter="{Binding}" />
                         </SwipeItems>

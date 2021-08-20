@@ -11,7 +11,8 @@ namespace GermanVerbs
         public App()
         {
             InitializeComponent();
-
+            Device.SetFlags(new string[] { "AppTheme_Experimental" });
+            Current.UserAppTheme = OSAppTheme.Unspecified;
             MainPage = new AppShell();
         }
 

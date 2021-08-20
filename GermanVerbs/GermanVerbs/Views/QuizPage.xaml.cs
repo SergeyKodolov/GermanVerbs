@@ -24,8 +24,8 @@ namespace GermanVerbs.Views
 
             VerbEntry.Conjugations = ConjugationData.Conjugations;
 
-            wrongAnswerColor = Color.FromHex("F4AAA9");
-            correctAnswerColor = Color.FromHex("C3D6C3");
+            wrongAnswerColor = Color.FromHex("f64336");
+            correctAnswerColor = Color.FromHex("3dca42");
         }
 
         async void VerbEntry_Search(object sender, Conjugation verb)
