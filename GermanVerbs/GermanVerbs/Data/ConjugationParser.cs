@@ -22,7 +22,7 @@ namespace GermanVerbs.Data
             {
                 return null;
             }
-            var newConjugation = await ParseFromHtmlDoc(conjugateDoc, translateDoc);
+            var newConjugation = await ParseFromHtmlDoc(verb, conjugateDoc, translateDoc);
 
             if (newConjugation != null)
             {
@@ -32,19 +32,16 @@ namespace GermanVerbs.Data
             return newConjugation;
         }
 
-        public static async Task<Conjugation> ParseFromHtmlDoc(HtmlDocument conjugateHtmlDoc, HtmlDocument translateHtmlDoc)
+        public static async Task<Conjugation> ParseFromHtmlDoc(string verb, HtmlDocument conjugateHtmlDoc, HtmlDocument translateHtmlDoc)
         {
             try
             {
                 return await Task.Run(() =>
                 {
-                    var node = translateHtmlDoc.DocumentNode
-                        .SelectSingleNode("//a[@class='translation ltr dict v']");
-                    var translation = node.InnerText.Trim();
+                    var invinitive = verb;
 
-                    node = conjugateHtmlDoc.DocumentNode
-                        .SelectSingleNode("//a[@class='targetted-word-transl']");
-                    var invinitive = node.InnerText.Trim();
+                    var node = translateHtmlDoc.DocumentNode.SelectSingleNode("//a[@class='translation ltr dict v']");
+                    var translation = node.InnerText.Trim();                    
 
                     Dictionary<string, string> presentIndicative = GetTense(conjugateHtmlDoc, "Indikativ Präsens");
                     Dictionary<string, string> perfectIndicative = GetTense(conjugateHtmlDoc, "Indikativ Perfekt");
